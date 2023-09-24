@@ -8,3 +8,4 @@
 | credit_master    | [Swagger]()                                      |       |                                       |
 | courses_master   | [Swagger]()                                      | 8081  | Сервис работает с обучающими курсами. |
 | exception_master | -                                                | -     | Сервис обработки исключений.          |
+| model_master     | -                                                | -     | Хранилище моделей и репозитариев.     |
