@@ -30,4 +30,13 @@ public class Person {
     public Person(Long id) {
         this.id = id;
     }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "id=" + id +
+                ", login='" + login + '\'' +
+                ", createDT=" + createDT +
+                '}';
+    }
 }

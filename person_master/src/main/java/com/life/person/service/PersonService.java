@@ -8,7 +8,8 @@ import java.util.List;
 public interface PersonService {
 
     PersonDTO createPerson(Person person);
-    PersonDTO getPersonById(Long id);
+    PersonDTO getPersonByIdDTO(Long id);
+    PersonDTO getPersonByLogin(String login);
     List<PersonDTO> getPersonList();
     PersonDTO patchPerson(Long id, Person person);
 

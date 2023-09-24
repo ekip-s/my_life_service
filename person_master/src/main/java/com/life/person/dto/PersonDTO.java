@@ -18,10 +18,7 @@ public class PersonDTO {
     private LocalDateTime createDT;
 
     public PersonDTO toDTO(Person person) {
-        this.id = person.getId();
-        this.login = person.getLogin();
-        this.createDT = person.getCreateDT();
-        return this;
+        return new PersonDTO(person.getId(), person.getLogin(), person.getCreateDT());
     }
 
     public List<PersonDTO> toDTO(List<Person> personList) {
