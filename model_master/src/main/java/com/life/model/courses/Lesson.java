@@ -28,6 +28,8 @@ public class Lesson {
     @Column(name = "planed_start_date")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate planedStartDate;
+    @Column(name = "lesson_num")
+    private Integer lessonNum;
     @Column(name = "start_dt")
     @DateTimeFormat(pattern = "yyyy-MM-ddTHH:mm:ss")
     private LocalDateTime startDT;

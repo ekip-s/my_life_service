@@ -17,6 +17,7 @@ CREATE TABLE IF NOT EXISTS Lessons (
     courses_id bigint NOT NULL,
     lesson_name varchar(100) not null,
     planed_start_date DATE,
+    lesson_num int,
     start_dt TIMESTAMP WITHOUT TIME ZONE,
     end_dt TIMESTAMP WITHOUT TIME ZONE,
     status SMALLINT NOT NULL,
