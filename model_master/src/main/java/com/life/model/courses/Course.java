@@ -41,4 +41,10 @@ public class Course {
     @Transient
     @OneToMany(mappedBy="course")
     private List<Lesson> lessonList;
+
+    public void newCourse(Long personId) {
+        this.person = new Person(personId);
+        this.createDT = LocalDateTime.now();
+        this.status = Status.NEW;
+    }
 }
