@@ -22,7 +22,7 @@
         <module>person_client</module>
     </modules>
     <properties>
-		<java.version>21</java.version>
+		<java.version>20</java.version>
 	</properties>
 
 	<build>
