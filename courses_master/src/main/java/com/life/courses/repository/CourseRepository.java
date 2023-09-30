@@ -1,5 +1,4 @@
-package com.life.repository;
-
+package com.life.courses.repository;
 
 import com.life.model.courses.Course;
 import org.springframework.data.jpa.repository.JpaRepository;

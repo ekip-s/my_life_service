@@ -4,7 +4,7 @@ import com.life.exception.ConflictException;
 import com.life.exception.NotFoundException;
 import com.life.model.person.Person;
 import com.life.model.person.PersonDTO;
-import com.life.repository.PersonRepository;
+import com.life.person.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
