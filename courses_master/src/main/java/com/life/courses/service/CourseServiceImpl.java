@@ -1,7 +1,10 @@
 package com.life.courses.service;
 
+
+
+import com.life.client.client.PersonClient;
+import com.life.courses.repository.CourseRepository;
 import com.life.model.courses.Course;
-import com.life.repository.CourseRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,11 +13,14 @@ import java.util.List;
 public class CourseServiceImpl implements CourseService {
 
     private final CourseRepository courseRepository;
+    private final PersonClient personClient;
 
 
-    public CourseServiceImpl(CourseRepository courseRepository) {
+    public CourseServiceImpl(CourseRepository courseRepository, PersonClient personClient) {
         this.courseRepository = courseRepository;
+        this.personClient = personClient;
     }
+
 
     @Override
     public List<Course> courseList(Long personId) {
@@ -22,13 +28,7 @@ public class CourseServiceImpl implements CourseService {
         return courseRepository.findAll();
     }
 
-    @Override
-    public Course createCourse(Long personId, Course course) {
-
-        return null;
-    }
-
     private void checkPerson(Long personId) {
-
+        personClient.getPersonByIdSync(personId);
     }
 }

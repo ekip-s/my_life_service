@@ -15,7 +15,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/v1/person")
+@RequestMapping("api/v1/person")
 @Tag(name="PersonController", description="Управление информацией о пользователях")
 public class PersonController {
 

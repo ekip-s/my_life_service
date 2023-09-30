@@ -4,14 +4,14 @@
 [<<< Фронт-приложение >>>](https://github.com/ekip-s/my_life_service_front)
 ***
 #### Сервисы:
-| Сервис:          | Swagger                                          | Порт: | Описание:                             |
-|------------------|--------------------------------------------------|-------|---------------------------------------|
-| person_maser     | [Swagger](http://localhost:8080/swagger-ui.html) | 8080  | Сервис работает с сущностью Person.   |
-| credit_master    | [Swagger]()                                      |       |                                       |
-| courses_master   | [Swagger]()                                      | 8081  | Сервис работает с обучающими курсами. |
-| exception_master | -                                                | -     | Сервис обработки исключений.          |
-| model_master     | -                                                | -     | Хранилище моделей.                    |
-| person_client    | -                                                | -     | Общая логика для коннекта с Person    |
+| Сервис:          | Swagger                                                | Порт: | Описание:                             |
+|------------------|--------------------------------------------------------|-------|---------------------------------------|
+| person_maser     | [Swagger](http://localhost:8080/swagger-ui.html)       | 8080  | Сервис работает с сущностью Person.   |
+| credit_master    | [Swagger]()                                            |       |                                       |
+| courses_master   | [Swagger](http://localhost:8081/swagger-ui/index.html) | 8081  | Сервис работает с обучающими курсами. |
+| exception_master | -                                                      | -     | Сервис обработки исключений.          |
+| model_master     | -                                                      | -     | Хранилище моделей.                    |
+| person_client    | -                                                      | -     | Общая логика для коннекта с Person    |
 
 ***
 ### updates list:
