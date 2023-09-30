@@ -1,13 +1,12 @@
-package com.life.person.dto;
-
-import com.life.person.model.Person;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+package com.life.model.person;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
@@ -27,6 +26,4 @@ public class PersonDTO {
                 .map(p -> toDTO(p))
                 .collect(Collectors.toList());
     }
-
-
 }

@@ -1,8 +1,7 @@
 package com.life.person.service;
 
-import com.life.person.dto.PersonDTO;
-import com.life.person.model.Person;
-
+import com.life.model.person.Person;
+import com.life.model.person.PersonDTO;
 import java.util.List;
 
 public interface PersonService {

@@ -1,7 +1,7 @@
 package com.life.person.controller;
 
-import com.life.person.dto.PersonDTO;
-import com.life.person.model.Person;
+import com.life.model.person.Person;
+import com.life.model.person.PersonDTO;
 import com.life.person.service.PersonService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

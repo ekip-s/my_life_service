@@ -1,12 +1,14 @@
-package com.life.person.model;
+package com.life.model.person;
 
-import jakarta.persistence.*;
+import com.life.model.courses.Course;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -26,6 +28,9 @@ public class Person {
     @Column(name = "create_dt")
     @DateTimeFormat(pattern = "yyyy-MM-ddTHH:mm:ss")
     private LocalDateTime createDT;
+    @Transient
+    @OneToMany(mappedBy="person")
+    private List<Course> courseList;
 
     public Person(Long id) {
         this.id = id;
