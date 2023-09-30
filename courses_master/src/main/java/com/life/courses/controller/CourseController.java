@@ -8,17 +8,14 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/course")
+@RequestMapping("/api/v1/course/{personId}")
 @Tag(name="CourseController", description="Управление курсами")
 public class CourseController {
 
@@ -31,6 +28,19 @@ public class CourseController {
     )
     @GetMapping
     public List<Course> courseList(@PathVariable @Parameter(description = "Идентификатор пользователя") Long personId) {
+        log.info("GET запрос к сервису {}. С personId = {}.", serviceURL, personId);
         return courseService.courseList(personId);
+    }
+
+    @Operation(
+            summary = "Добавление нового курса",
+            description = "Добавление нового курса"
+    )
+    @PostMapping
+    public Course addNewCourse(@PathVariable @Parameter(description = "Идентификатор пользователя") Long personId,
+                               @RequestBody Course course) {
+        log.info("POST запрос к сервису {}. С personId = {}. Параметры запроса: {}.",
+                serviceURL, personId, course.toString());
+        return courseService.addNewCourse(personId, course);
     }
 }

@@ -1,7 +1,5 @@
 package com.life.courses.service;
 
-
-
 import com.life.client.client.PersonClient;
 import com.life.courses.repository.CourseRepository;
 import com.life.model.courses.Course;
@@ -26,6 +24,12 @@ public class CourseServiceImpl implements CourseService {
     public List<Course> courseList(Long personId) {
         checkPerson(personId);
         return courseRepository.findAll();
+    }
+
+    @Override
+    public Course addNewCourse(Long personId, Course course) {
+        course.newCourse(personId);
+        return courseRepository.save(course);
     }
 
     private void checkPerson(Long personId) {
