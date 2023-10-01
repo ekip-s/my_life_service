@@ -9,6 +9,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -20,7 +21,7 @@ public class Person {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private UUID id;
     @Column(name = "login")
     private String login;
     @Column(name = "password")
@@ -32,7 +33,7 @@ public class Person {
     @OneToMany(mappedBy="person")
     private List<Course> courseList;
 
-    public Person(Long id) {
+    public Person(UUID id) {
         this.id = id;
     }
 

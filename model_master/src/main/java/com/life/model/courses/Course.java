@@ -10,6 +10,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -21,7 +22,7 @@ public class Course {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private UUID id;
     @ManyToOne
     @JoinColumn(name="person_id", nullable=false)
     private Person person;
@@ -42,7 +43,7 @@ public class Course {
     @OneToMany(mappedBy="course")
     private List<Lesson> lessonList;
 
-    public void newCourse(Long personId) {
+    public void newCourse(UUID personId) {
         this.person = new Person(personId);
         this.createDT = LocalDateTime.now();
         this.status = Status.NEW;

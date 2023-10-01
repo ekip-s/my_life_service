@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @RestController
@@ -37,7 +38,7 @@ public class PersonController {
             description = "Возвращает информацию о пользователе по id записи"
     )
     @GetMapping("/{personId}")
-    public PersonDTO getPersonById(@PathVariable @Parameter(description = "Идентификатор пользователя") Long personId) {
+    public PersonDTO getPersonById(@PathVariable @Parameter(description = "Идентификатор пользователя") UUID personId) {
         log.info("GET запрос к сервису {}/{personId}. С id = {}.", serviceURL, personId);
         return personService.getPersonByIdDTO(personId);
     }
@@ -67,7 +68,7 @@ public class PersonController {
             description = "Меняет логин и/или пароль"
     )
     @PatchMapping("/{personId}")
-    public PersonDTO patchPerson(@PathVariable @Parameter(description = "Идентификатор пользователя") Long personId,
+    public PersonDTO patchPerson(@PathVariable @Parameter(description = "Идентификатор пользователя") UUID personId,
                                  @RequestBody Person person) {
         log.info("PATCH запрос к сервису {}/{personId}. С id = {}. Параметры запроса: {}.",
                 serviceURL, personId, person.toString());
@@ -79,7 +80,7 @@ public class PersonController {
             description = "Удаление информации по id пользователя"
     )
     @DeleteMapping("/{personId}")
-    public void deletePersonById(@PathVariable @Parameter(description = "Идентификатор пользователя") Long personId) {
+    public void deletePersonById(@PathVariable @Parameter(description = "Идентификатор пользователя") UUID personId) {
         log.info("DELETE запрос к сервису {}/{personId}. С id = {}.", serviceURL, personId);
         personService.deletePersonById(personId);
     }

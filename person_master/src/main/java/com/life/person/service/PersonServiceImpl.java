@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class PersonServiceImpl implements PersonService {
@@ -30,7 +31,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public PersonDTO getPersonByIdDTO(Long id) {
+    public PersonDTO getPersonByIdDTO(UUID id) {
         return new PersonDTO().toDTO(personRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Некорректный запрос",
                         "Нет пользователя с id: " + id + ".")));
@@ -50,7 +51,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public PersonDTO patchPerson(Long id, Person person) {
+    public PersonDTO patchPerson(UUID id, Person person) {
         Person personDB = getPersonById(id);
         if(person.getLogin() != null && !person.getLogin().isBlank()) {
             checkPersonLogin(person);
@@ -63,7 +64,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public void deletePersonById(Long id) {
+    public void deletePersonById(UUID id) {
         getPersonById(id);
         personRepository.deleteById(id);
     }
@@ -74,7 +75,7 @@ public class PersonServiceImpl implements PersonService {
         }
     }
 
-    private Person getPersonById(Long id) {
+    private Person getPersonById(UUID id) {
         return personRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Некорректный запрос",
                         "Нет пользователя с id: " + id + "."));
