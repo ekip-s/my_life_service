@@ -10,4 +10,6 @@ public interface CourseService {
     List<Course> courseList(UUID personId);
     Course addNewCourse(UUID personId, Course course);
     void deleteCourseById(UUID personId, UUID courseId);
+    Course patchCourseName(UUID personId, UUID courseId, Course course);
+    void deleteAllCourse(UUID personId);
 }

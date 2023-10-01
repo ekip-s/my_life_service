@@ -45,6 +45,19 @@ public class CourseController {
     }
 
     @Operation(
+            summary = "Изменить название курса",
+            description = "Меняет название курса на новое"
+    )
+    @PatchMapping("/{courseId}")
+    public Course patchCourseName(@PathVariable @Parameter(description = "Идентификатор пользователя") UUID personId,
+                                  @PathVariable @Parameter(description = "Идентификатор курса") UUID courseId,
+                               @RequestBody Course course) {
+        log.info("DELETE запрос к сервису {}. С personId = {}. courseId = {}. Параметры запроса: {}.",
+                serviceURL, personId, courseId, course.toString());
+        return courseService.patchCourseName(personId, courseId, course);
+    }
+
+    @Operation(
             summary = "Удаление курса",
             description = "Удаляет курс и связанные уроки по id"
     )
@@ -54,5 +67,16 @@ public class CourseController {
         log.info("DELETE запрос к сервису {}. С personId = {}. courseId = {}.",
                 serviceURL, personId, courseId);
         courseService.deleteCourseById(personId, courseId);
+    }
+
+    @Operation(
+            summary = "Удаление всех курсов",
+            description = "Удаляет все курсы текущего пользователя"
+    )
+    @DeleteMapping("/all")
+    public void deleteAllCourse(@PathVariable @Parameter(description = "Идентификатор пользователя") UUID personId) {
+        log.info("DELETE запрос к сервису {}/all. С personId = {}.",
+                serviceURL, personId);
+        courseService.deleteAllCourse(personId);
     }
 }
