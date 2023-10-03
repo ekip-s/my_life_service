@@ -8,12 +8,14 @@ import com.life.person.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
 @Service
+@Transactional(readOnly = true)
 public class PersonServiceImpl implements PersonService {
 
     private final PersonRepository personRepository;
@@ -24,6 +26,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
+    @Transactional
     public PersonDTO createPerson(Person person) {
         checkPersonLogin(person);
         person.setCreateDT(LocalDateTime.now());
@@ -51,6 +54,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
+    @Transactional
     public PersonDTO patchPerson(UUID id, Person person) {
         Person personDB = getPersonById(id);
         if(person.getLogin() != null && !person.getLogin().isBlank()) {
@@ -64,6 +68,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
+    @Transactional
     public void deletePersonById(UUID id) {
         getPersonById(id);
         personRepository.deleteById(id);

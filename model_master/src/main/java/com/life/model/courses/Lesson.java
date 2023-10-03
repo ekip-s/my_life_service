@@ -39,4 +39,13 @@ public class Lesson {
     private LocalDateTime endDT;
     @Enumerated(EnumType.ORDINAL)
     private Status status;
+
+    public Lesson createNewLesson(Course course, LocalDate planedStartDate, Integer lessonNum) {
+        this.course = course;
+        this.planedStartDate = planedStartDate;
+        this.lessonNum = lessonNum;
+        this.startDT = LocalDateTime.now();
+        this.status = Status.NEW;
+        return this;
+    }
 }

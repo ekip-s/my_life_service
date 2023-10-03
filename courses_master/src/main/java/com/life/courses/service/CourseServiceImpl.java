@@ -32,6 +32,12 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    public Course getCourseById(UUID personId, UUID courseId) {
+        checkPerson(personId);
+        return getCourseById(courseId);
+    }
+
+    @Override
     @Transactional
     public Course addNewCourse(UUID personId, Course course) {
         checkPerson(personId);

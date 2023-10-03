@@ -15,12 +15,12 @@ import java.util.UUID;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/course/{personId}")
+@RequestMapping("/api/v1/{personId}/course")
 @Tag(name="CourseController", description="Управление курсами")
 public class CourseController {
 
     private final CourseService courseService;
-    private final String serviceURL = "/v1/course/{personId}";
+    private final String serviceURL = "/api/v1/{personId}/course";
 
     @Operation(
             summary = "Лист курсов",
@@ -30,6 +30,18 @@ public class CourseController {
     public List<Course> courseList(@PathVariable @Parameter(description = "Идентификатор пользователя") UUID personId) {
         log.info("GET запрос к сервису {}. С personId = {}.", serviceURL, personId);
         return courseService.courseList(personId);
+    }
+
+    @Operation(
+            summary = "Получение курса",
+            description = "Получение курса по ID"
+    )
+    @GetMapping("/{courseId}")
+    public Course getCourseById(@PathVariable @Parameter(description = "Идентификатор пользователя") UUID personId,
+                                @PathVariable @Parameter(description = "Идентификатор курса") UUID courseId) {
+        log.info("GET запрос к сервису {}. С personId = {}. courseId = {}.",
+                serviceURL, personId, courseId);
+        return getCourseById(personId, courseId);
     }
 
     @Operation(

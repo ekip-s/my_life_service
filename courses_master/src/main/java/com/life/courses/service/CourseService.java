@@ -8,6 +8,7 @@ import java.util.UUID;
 public interface CourseService {
 
     List<Course> courseList(UUID personId);
+    Course getCourseById(UUID personId, UUID courseId);
     Course addNewCourse(UUID personId, Course course);
     void deleteCourseById(UUID personId, UUID courseId);
     Course patchCourseName(UUID personId, UUID courseId, Course course);
