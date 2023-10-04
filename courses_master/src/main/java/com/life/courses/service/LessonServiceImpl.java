@@ -2,6 +2,7 @@ package com.life.courses.service;
 
 
 import com.life.courses.repository.LessonRepository;
+import com.life.exception.NotFoundException;
 import com.life.model.courses.Course;
 import com.life.model.courses.Lesson;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,17 +28,57 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
+    public Lesson getLessonById(UUID personId, UUID courseId, UUID lessonId) {
+        Course course = courseService.getCourseById(personId, courseId);
+        return lessonRepository.getLessonByCourseAndId(course, lessonId)
+                .orElseThrow(() -> new NotFoundException("Некорректный запрос",
+                "Нет урока с id: " + lessonId + "."));
+    }
+
+    @Override
     @Transactional
     public Lesson addNewLesson(UUID personId, UUID courseId, Lesson lesson) {
         Course course = courseService.getCourseById(personId, courseId);
-        List<Lesson> lessons = getLastLessons(course);
-        //вытащить все курсы на последнюю дату
-        i++;
-        LocalDate fakeDate = LocalDate.now().plusDays((int) (Math.random() * 6));
-        return lessonRepository.save(lesson.createNewLesson(course, fakeDate, i));
+        List<Lesson> lessons = getLastLessons();
+        LocalDate planedStartDate;
+        Integer lessonNum;
+        if(lessons.isEmpty()) {
+            planedStartDate = LocalDate.now();
+            lessonNum = 1;
+        } else if (lessons.size() < 3) {
+            Lesson engLesson = lessons.get(lessons.size() - 1);
+            planedStartDate = engLesson.getPlanedStartDate();
+            lessonNum = engLesson.getLessonNum() + 1;
+        } else {
+            Lesson engLesson = lessons.get(lessons.size()- 1);
+            planedStartDate = engLesson.getPlanedStartDate().plusDays(1);
+            lessonNum = engLesson.getLessonNum() + 1;
+        }
+
+        return lessonRepository.save(lesson.createNewLesson(course, planedStartDate, lessonNum));
     }
 
-    private List<Lesson> getLastLessons(Course course) {
-        return lessonRepository.getLastLessons(course);
+    @Override
+    public Lesson patchLessonName(UUID personId, UUID courseId, String newName) {
+        return null;
+    }
+
+    @Override
+    public Lesson doneLesson(UUID personId, UUID courseId, UUID lessonId) {
+        return null;
+    }
+
+    @Override
+    public void deleteLessonById(UUID personId, UUID courseId, UUID lessonId) {
+
+    }
+
+    @Override
+    public void deleteLessonByCourse(UUID personId, UUID courseId) {
+
+    }
+
+    private List<Lesson> getLastLessons() {
+        return lessonRepository.getLastLessons();
     }
 }

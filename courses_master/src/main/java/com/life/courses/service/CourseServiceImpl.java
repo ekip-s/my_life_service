@@ -63,6 +63,13 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     @Transactional
+    public Course doneCourse(UUID personId, UUID courseId) {
+        Course course = getCourseById(personId, courseId);
+        return courseRepository.save(course.doneCourse());
+    }
+
+    @Override
+    @Transactional
     public void deleteAllCourse(UUID personId) {
         courseRepository.deleteAllByPerson(new Person(personId));
     }

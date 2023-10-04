@@ -12,5 +12,6 @@ public interface CourseService {
     Course addNewCourse(UUID personId, Course course);
     void deleteCourseById(UUID personId, UUID courseId);
     Course patchCourseName(UUID personId, UUID courseId, Course course);
+    Course doneCourse(UUID personId, UUID courseId);
     void deleteAllCourse(UUID personId);
 }

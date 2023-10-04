@@ -48,4 +48,10 @@ public class Course {
         this.createDT = LocalDateTime.now();
         this.status = Status.NEW;
     }
+
+    public Course doneCourse() {
+        this.endDate = LocalDate.now();
+        this.status = Status.DONE;
+        return this;
+    }
 }

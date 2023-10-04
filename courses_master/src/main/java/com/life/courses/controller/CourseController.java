@@ -41,7 +41,7 @@ public class CourseController {
                                 @PathVariable @Parameter(description = "Идентификатор курса") UUID courseId) {
         log.info("GET запрос к сервису {}. С personId = {}. courseId = {}.",
                 serviceURL, personId, courseId);
-        return getCourseById(personId, courseId);
+        return courseService.getCourseById(personId, courseId);
     }
 
     @Operation(
@@ -64,9 +64,21 @@ public class CourseController {
     public Course patchCourseName(@PathVariable @Parameter(description = "Идентификатор пользователя") UUID personId,
                                   @PathVariable @Parameter(description = "Идентификатор курса") UUID courseId,
                                @RequestBody Course course) {
-        log.info("DELETE запрос к сервису {}. С personId = {}. courseId = {}. Параметры запроса: {}.",
+        log.info("PATCH запрос к сервису {}. С personId = {}. courseId = {}. Параметры запроса: {}.",
                 serviceURL, personId, courseId, course.toString());
         return courseService.patchCourseName(personId, courseId, course);
+    }
+
+    @Operation(
+            summary = "Выполнить курс",
+            description = "Изменяет статус курса на DONE"
+    )
+    @PatchMapping("/{courseId}/done")
+    public Course doneCourse(@PathVariable @Parameter(description = "Идентификатор пользователя") UUID personId,
+                             @PathVariable @Parameter(description = "Идентификатор курса") UUID courseId) {
+        log.info("PATCH запрос к сервису {}/{courseId}/done. С personId = {}. courseId = {}.",
+                serviceURL, personId, courseId);
+        return courseService.doneCourse(personId, courseId);
     }
 
     @Operation(
