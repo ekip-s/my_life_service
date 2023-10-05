@@ -9,7 +9,7 @@ public interface LessonService {
 
     Lesson getLessonById(UUID personId, UUID courseId, UUID lessonId);
     Lesson addNewLesson(UUID personId, UUID courseId, Lesson lesson);
-    Lesson patchLessonName(UUID personId, UUID courseId, String newName);
+    Lesson patchLessonName(UUID personId, UUID courseId, UUID lessonId, String newName);
     Lesson doneLesson(UUID personId, UUID courseId, UUID lessonId);
     void deleteLessonById(UUID personId, UUID courseId, UUID lessonId);
     void deleteLessonByCourse(UUID personId, UUID courseId);

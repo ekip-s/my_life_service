@@ -84,4 +84,9 @@ public class CourseServiceImpl implements CourseService {
                 .orElseThrow(() -> new NotFoundException("Некорректный запрос",
                         "Нет курса с id: " + courseId + "."));
     }
+
+    @Transactional
+    public void setCourseDate() {
+
+    }
 }

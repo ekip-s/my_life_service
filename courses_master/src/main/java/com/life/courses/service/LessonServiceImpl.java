@@ -59,23 +59,28 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
-    public Lesson patchLessonName(UUID personId, UUID courseId, String newName) {
-        return null;
+    public Lesson patchLessonName(UUID personId, UUID courseId, UUID lessonId, String newName) {
+        Lesson lesson = getLessonById(personId, courseId, lessonId);
+        lesson.setLessonName(newName);
+        return lessonRepository.save(lesson);
     }
 
     @Override
     public Lesson doneLesson(UUID personId, UUID courseId, UUID lessonId) {
-        return null;
+        Lesson lesson = getLessonById(personId, courseId, lessonId);
+        return lessonRepository.save(lesson.doneLesson());
     }
 
     @Override
     public void deleteLessonById(UUID personId, UUID courseId, UUID lessonId) {
-
+        getLessonById(personId, courseId, lessonId);
+        lessonRepository.deleteById(lessonId);
     }
 
     @Override
     public void deleteLessonByCourse(UUID personId, UUID courseId) {
-
+        Course course = courseService.getCourseById(personId, courseId);
+        lessonRepository.deleteAllByCourse(course);
     }
 
     private List<Lesson> getLastLessons() {

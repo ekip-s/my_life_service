@@ -56,10 +56,11 @@ public class LessonController {
     @PatchMapping("/setName/{newName}")
     public Lesson patchLessonName(@PathVariable @Parameter(description = "Идентификатор пользователя") UUID personId,
                                   @PathVariable @Parameter(description = "Идентификатор курса") UUID courseId,
+                                  @PathVariable @Parameter(description = "Идентификатор урока") UUID lessonId,
                                   @PathVariable @Parameter(description = "Идентификатор курса") String newName) {
         log.info("PATCH запрос к сервису {}/setName. personId = {}, courseId = {}. Новое название курса: {}.",
                 serviceURL, personId, courseId, newName);
-        return lessonService.patchLessonName(personId, courseId, newName);
+        return lessonService.patchLessonName(personId, courseId, lessonId, newName);
     }
 
     @Operation(

@@ -1,16 +1,17 @@
 package com.life.model.courses;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Data
+
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -46,6 +47,12 @@ public class Lesson {
         this.lessonNum = lessonNum;
         this.startDT = LocalDateTime.now();
         this.status = Status.NEW;
+        return this;
+    }
+
+    public Lesson doneLesson() {
+        this.endDT = LocalDateTime.now();
+        this.status = Status.DONE;
         return this;
     }
 }
