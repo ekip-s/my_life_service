@@ -1,15 +1,18 @@
 package com.life.model.courses;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
-@Data
+
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -19,7 +22,7 @@ public class Lesson {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private UUID id;
     @ManyToOne
     @JoinColumn(name="courses_id", nullable=false)
     private Course course;
@@ -38,4 +41,19 @@ public class Lesson {
     private LocalDateTime endDT;
     @Enumerated(EnumType.ORDINAL)
     private Status status;
+
+    public Lesson(Course course, LocalDate planedStartDate, Integer lessonNum, String lessonName) {
+        this.course = course;
+        this.lessonName = lessonName;
+        this.planedStartDate = planedStartDate;
+        this.lessonNum = lessonNum;
+        this.startDT = LocalDateTime.now();
+        this.status = Status.NEW;
+    }
+
+    public Lesson doneLesson() {
+        this.endDT = LocalDateTime.now();
+        this.status = Status.DONE;
+        return this;
+    }
 }

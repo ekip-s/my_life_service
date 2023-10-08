@@ -8,11 +8,14 @@ import com.life.person.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Service
+@Transactional(readOnly = true)
 public class PersonServiceImpl implements PersonService {
 
     private final PersonRepository personRepository;
@@ -23,6 +26,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
+    @Transactional
     public PersonDTO createPerson(Person person) {
         checkPersonLogin(person);
         person.setCreateDT(LocalDateTime.now());
@@ -30,7 +34,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public PersonDTO getPersonByIdDTO(Long id) {
+    public PersonDTO getPersonByIdDTO(UUID id) {
         return new PersonDTO().toDTO(personRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Некорректный запрос",
                         "Нет пользователя с id: " + id + ".")));
@@ -50,7 +54,8 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public PersonDTO patchPerson(Long id, Person person) {
+    @Transactional
+    public PersonDTO patchPerson(UUID id, Person person) {
         Person personDB = getPersonById(id);
         if(person.getLogin() != null && !person.getLogin().isBlank()) {
             checkPersonLogin(person);
@@ -63,7 +68,8 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public void deletePersonById(Long id) {
+    @Transactional
+    public void deletePersonById(UUID id) {
         getPersonById(id);
         personRepository.deleteById(id);
     }
@@ -74,7 +80,7 @@ public class PersonServiceImpl implements PersonService {
         }
     }
 
-    private Person getPersonById(Long id) {
+    private Person getPersonById(UUID id) {
         return personRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Некорректный запрос",
                         "Нет пользователя с id: " + id + "."));
