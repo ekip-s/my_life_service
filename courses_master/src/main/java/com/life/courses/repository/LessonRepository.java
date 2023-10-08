@@ -3,6 +3,8 @@ package com.life.courses.repository;
 
 import com.life.model.courses.Course;
 import com.life.model.courses.Lesson;
+import com.life.model.courses.Status;
+import com.life.model.person.Person;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -19,6 +21,6 @@ public interface LessonRepository extends JpaRepository<Lesson, UUID> {
             " (select planedStartDate from Lesson order by planedStartDate desc limit 1) " +
             " order by planedStartDate")
     List<Lesson> getLastLessons();
-    Optional<Lesson> getLessonByCourseAndId(Course course, UUID id);
+    List<Lesson> findAllByCourseAndStatusOrderByLessonNum(Course course, Status status);
     void deleteAllByCourse(Course course);
 }

@@ -1,10 +1,12 @@
 package com.life.courses.service;
 
 
+import com.life.client.client.PersonClient;
 import com.life.courses.repository.LessonRepository;
 import com.life.exception.NotFoundException;
 import com.life.model.courses.Course;
 import com.life.model.courses.Lesson;
+import com.life.model.courses.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,26 +21,34 @@ public class LessonServiceImpl implements LessonService {
 
     private final LessonRepository lessonRepository;
     private final CourseService courseService;
+    private final PersonClient personClient;
     int i = 0;
 
     @Autowired
-    public LessonServiceImpl(LessonRepository lessonRepository, CourseService courseService) {
+    public LessonServiceImpl(LessonRepository lessonRepository, CourseService courseService, PersonClient personClient) {
         this.lessonRepository = lessonRepository;
         this.courseService = courseService;
+        this.personClient = personClient;
     }
 
     @Override
-    public Lesson getLessonById(UUID personId, UUID courseId, UUID lessonId) {
-        Course course = courseService.getCourseById(personId, courseId);
-        return lessonRepository.getLessonByCourseAndId(course, lessonId)
+    public Lesson getLessonById(UUID lessonId) {
+        return lessonRepository.findById(lessonId)
                 .orElseThrow(() -> new NotFoundException("Некорректный запрос",
                 "Нет урока с id: " + lessonId + "."));
     }
 
     @Override
+    public List<Lesson> getLessonList(UUID courseId) {
+        Course course = courseService.getCourseById(courseId);
+        return lessonRepository.findAllByCourseAndStatusOrderByLessonNum(new Course(courseId), Status.NEW);
+    }
+
+    @Override
     @Transactional
-    public Lesson addNewLesson(UUID personId, UUID courseId, Lesson lesson) {
-        Course course = courseService.getCourseById(personId, courseId);
+    public Lesson addNewLesson(UUID personId, UUID courseId, String lessonName) {
+        checkPerson(personId);
+        Course course = courseService.getCourseById(courseId);
         List<Lesson> lessons = getLastLessons();
         LocalDate planedStartDate;
         Integer lessonNum;
@@ -55,32 +65,40 @@ public class LessonServiceImpl implements LessonService {
             lessonNum = engLesson.getLessonNum() + 1;
         }
 
-        return lessonRepository.save(lesson.createNewLesson(course, planedStartDate, lessonNum));
+        return lessonRepository.save(new Lesson(course, planedStartDate, lessonNum, lessonName));
     }
 
     @Override
-    public Lesson patchLessonName(UUID personId, UUID courseId, UUID lessonId, String newName) {
-        Lesson lesson = getLessonById(personId, courseId, lessonId);
+    @Transactional
+    public Lesson patchLessonName(UUID lessonId, String newName) {
+        Lesson lesson = getLessonById(lessonId);
         lesson.setLessonName(newName);
         return lessonRepository.save(lesson);
     }
 
     @Override
-    public Lesson doneLesson(UUID personId, UUID courseId, UUID lessonId) {
-        Lesson lesson = getLessonById(personId, courseId, lessonId);
+    @Transactional
+    public Lesson doneLesson(UUID lessonId) {
+        Lesson lesson = getLessonById(lessonId);
         return lessonRepository.save(lesson.doneLesson());
     }
 
     @Override
-    public void deleteLessonById(UUID personId, UUID courseId, UUID lessonId) {
-        getLessonById(personId, courseId, lessonId);
+    @Transactional
+    public void deleteLessonById(UUID lessonId) {
+        getLessonById(lessonId);
         lessonRepository.deleteById(lessonId);
     }
 
     @Override
-    public void deleteLessonByCourse(UUID personId, UUID courseId) {
-        Course course = courseService.getCourseById(personId, courseId);
+    @Transactional
+    public void deleteLessonByCourse(UUID courseId) {
+        Course course = courseService.getCourseById(courseId);
         lessonRepository.deleteAllByCourse(course);
+    }
+
+    private void checkPerson(UUID personId) {
+        personClient.getPersonByIdSync(personId);
     }
 
     private List<Lesson> getLastLessons() {

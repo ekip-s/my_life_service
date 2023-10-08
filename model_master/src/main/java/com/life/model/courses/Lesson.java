@@ -1,5 +1,6 @@
 package com.life.model.courses;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -41,13 +42,13 @@ public class Lesson {
     @Enumerated(EnumType.ORDINAL)
     private Status status;
 
-    public Lesson createNewLesson(Course course, LocalDate planedStartDate, Integer lessonNum) {
+    public Lesson(Course course, LocalDate planedStartDate, Integer lessonNum, String lessonName) {
         this.course = course;
+        this.lessonName = lessonName;
         this.planedStartDate = planedStartDate;
         this.lessonNum = lessonNum;
         this.startDT = LocalDateTime.now();
         this.status = Status.NEW;
-        return this;
     }
 
     public Lesson doneLesson() {

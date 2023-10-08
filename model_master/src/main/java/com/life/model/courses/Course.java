@@ -1,5 +1,6 @@
 package com.life.model.courses;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.life.model.person.Person;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -40,13 +41,18 @@ public class Course {
     @Enumerated(EnumType.ORDINAL)
     private Status status;
     @Transient
-    @OneToMany(mappedBy="course")
+    @OneToMany(mappedBy="course", fetch = FetchType.LAZY)
     private List<Lesson> lessonList;
 
-    public void newCourse(UUID personId) {
+    public Course(UUID personId, String courseName) {
         this.person = new Person(personId);
+        this.courseName = courseName;
         this.createDT = LocalDateTime.now();
         this.status = Status.NEW;
+    }
+
+    public Course(UUID id) {
+        this.id = id;
     }
 
     public Course doneCourse() {

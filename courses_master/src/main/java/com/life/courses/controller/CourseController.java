@@ -15,20 +15,20 @@ import java.util.UUID;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/{personId}/course")
+@RequestMapping("/api/v1/course")
 @Tag(name="CourseController", description="Управление курсами")
 public class CourseController {
 
     private final CourseService courseService;
-    private final String serviceURL = "/api/v1/{personId}/course";
+    private final String serviceURL = "/api/v1/course";
 
     @Operation(
             summary = "Лист курсов",
             description = "Лист курсов, сортировка по дате создания"
     )
-    @GetMapping
+    @GetMapping("/list/{personId}")
     public List<Course> courseList(@PathVariable @Parameter(description = "Идентификатор пользователя") UUID personId) {
-        log.info("GET запрос к сервису {}. С personId = {}.", serviceURL, personId);
+        log.info("GET запрос к сервису {}/{personId}. С personId = {}.", serviceURL, personId);
         return courseService.courseList(personId);
     }
 
@@ -37,36 +37,33 @@ public class CourseController {
             description = "Получение курса по ID"
     )
     @GetMapping("/{courseId}")
-    public Course getCourseById(@PathVariable @Parameter(description = "Идентификатор пользователя") UUID personId,
-                                @PathVariable @Parameter(description = "Идентификатор курса") UUID courseId) {
-        log.info("GET запрос к сервису {}. С personId = {}. courseId = {}.",
-                serviceURL, personId, courseId);
-        return courseService.getCourseById(personId, courseId);
+    public Course getCourseById(@PathVariable @Parameter(description = "Идентификатор курса") UUID courseId) {
+        log.info("GET запрос к сервису {}/{courseId}. С personId = {}. courseId = {}.", serviceURL, courseId);
+        return courseService.getCourseById(courseId);
     }
 
     @Operation(
             summary = "Добавление нового курса",
             description = "Добавление нового курса"
     )
-    @PostMapping
+    @PostMapping("/{personId}/name/{courseName}")
     public Course addNewCourse(@PathVariable @Parameter(description = "Идентификатор пользователя") UUID personId,
-                               @RequestBody Course course) {
-        log.info("POST запрос к сервису {}. С personId = {}. Параметры запроса: {}.",
-                serviceURL, personId, course.toString());
-        return courseService.addNewCourse(personId, course);
+                               @PathVariable @Parameter(description = "Название курса") String courseName) {
+        log.info("POST запрос к сервису {}/{personId}. С personId = {}. Название курса: {}.",
+                serviceURL, personId, courseName);
+        return courseService.addNewCourse(personId, courseName);
     }
 
     @Operation(
             summary = "Изменить название курса",
             description = "Меняет название курса на новое"
     )
-    @PatchMapping("/{courseId}")
-    public Course patchCourseName(@PathVariable @Parameter(description = "Идентификатор пользователя") UUID personId,
-                                  @PathVariable @Parameter(description = "Идентификатор курса") UUID courseId,
-                               @RequestBody Course course) {
-        log.info("PATCH запрос к сервису {}. С personId = {}. courseId = {}. Параметры запроса: {}.",
-                serviceURL, personId, courseId, course.toString());
-        return courseService.patchCourseName(personId, courseId, course);
+    @PatchMapping("/{courseId}/name/{courseName}")
+    public Course patchCourseName(@PathVariable @Parameter(description = "Идентификатор курса") UUID courseId,
+                                  @PathVariable @Parameter(description = "Новое название курса") String courseName) {
+        log.info("PATCH запрос к сервису {}/{courseId}/name/{courseName}. CourseId = {}. Новое название курса: {}.",
+                serviceURL, courseId, courseName);
+        return courseService.patchCourseName(courseId, courseName);
     }
 
     @Operation(
@@ -74,11 +71,10 @@ public class CourseController {
             description = "Изменяет статус курса на DONE"
     )
     @PatchMapping("/{courseId}/done")
-    public Course doneCourse(@PathVariable @Parameter(description = "Идентификатор пользователя") UUID personId,
-                             @PathVariable @Parameter(description = "Идентификатор курса") UUID courseId) {
-        log.info("PATCH запрос к сервису {}/{courseId}/done. С personId = {}. courseId = {}.",
-                serviceURL, personId, courseId);
-        return courseService.doneCourse(personId, courseId);
+    public Course doneCourse(@PathVariable @Parameter(description = "Идентификатор курса") UUID courseId) {
+        log.info("PATCH запрос к сервису {}/{courseId}/done. С courseId = {}.",
+                serviceURL, courseId);
+        return courseService.doneCourse(courseId);
     }
 
     @Operation(
@@ -86,21 +82,19 @@ public class CourseController {
             description = "Удаляет курс и связанные уроки по id"
     )
     @DeleteMapping("/{courseId}")
-    public void deleteCourseById(@PathVariable @Parameter(description = "Идентификатор пользователя") UUID personId,
-                                  @PathVariable @Parameter(description = "Идентификатор курса") UUID courseId) {
-        log.info("DELETE запрос к сервису {}. С personId = {}. courseId = {}.",
-                serviceURL, personId, courseId);
-        courseService.deleteCourseById(personId, courseId);
+    public void deleteCourseById(@PathVariable @Parameter(description = "Идентификатор курса") UUID courseId) {
+        log.info("DELETE запрос к сервису {}/{courseId}. С personId = {}. courseId = {}.",
+                serviceURL, courseId);
+        courseService.deleteCourseById(courseId);
     }
 
     @Operation(
             summary = "Удаление всех курсов",
             description = "Удаляет все курсы текущего пользователя"
     )
-    @DeleteMapping("/all")
+    @DeleteMapping("/all/{personId}")
     public void deleteAllCourse(@PathVariable @Parameter(description = "Идентификатор пользователя") UUID personId) {
-        log.info("DELETE запрос к сервису {}/all. С personId = {}.",
-                serviceURL, personId);
+        log.info("DELETE запрос к сервису {}/all/{personId}. С personId = {}.", serviceURL, personId);
         courseService.deleteAllCourse(personId);
     }
 }

@@ -4,6 +4,7 @@ import com.life.client.client.PersonClient;
 import com.life.courses.repository.CourseRepository;
 import com.life.exception.NotFoundException;
 import com.life.model.courses.Course;
+import com.life.model.courses.Status;
 import com.life.model.person.Person;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,43 +29,34 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public List<Course> courseList(UUID personId) {
         checkPerson(personId);
-        return courseRepository.findAll();
-    }
-
-    @Override
-    public Course getCourseById(UUID personId, UUID courseId) {
-        checkPerson(personId);
-        return getCourseById(courseId);
+        return courseRepository.findAllByPersonAndStatusOrderByCreateDT(new Person(personId), Status.NEW);
     }
 
     @Override
     @Transactional
-    public Course addNewCourse(UUID personId, Course course) {
+    public Course addNewCourse(UUID personId, String courseName) {
         checkPerson(personId);
-        course.newCourse(personId);
-        return courseRepository.save(course);
+        return courseRepository.save(new Course(personId, courseName));
     }
 
     @Override
     @Transactional
-    public void deleteCourseById(UUID personId, UUID courseId) {
-        checkPerson(personId);
+    public void deleteCourseById(UUID courseId) {
         courseRepository.deleteById(courseId);
     }
 
     @Override
     @Transactional
-    public Course patchCourseName(UUID personId, UUID courseId, Course course) {
-        checkPerson(personId);
+    public Course patchCourseName(UUID courseId, String courseName) {
         Course oldCourse = getCourseById(courseId);
-        oldCourse.setCourseName(course.getCourseName());
+        oldCourse.setCourseName(courseName);
         return courseRepository.save(oldCourse);
     }
 
     @Override
     @Transactional
-    public Course doneCourse(UUID personId, UUID courseId) {
-        Course course = getCourseById(personId, courseId);
+    public Course doneCourse(UUID courseId) {
+        Course course = getCourseById(courseId);
         return courseRepository.save(course.doneCourse());
     }
 
@@ -78,8 +70,8 @@ public class CourseServiceImpl implements CourseService {
         personClient.getPersonByIdSync(personId);
     }
 
-    @Transactional
-    private Course getCourseById(UUID courseId) {
+    @Override
+    public Course getCourseById(UUID courseId) {
         return courseRepository.findById(courseId)
                 .orElseThrow(() -> new NotFoundException("Некорректный запрос",
                         "Нет курса с id: " + courseId + "."));
