@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.util.UUID;
+
 @Component
 public class PersonClientImpl implements PersonClient {
 
@@ -17,7 +19,7 @@ public class PersonClientImpl implements PersonClient {
 
 
     @Override
-    public Person getPersonByIdSync(Long id) {
+    public Person getPersonByIdSync(UUID id) {
         return webClient
                 .get()
                 .uri(String.join("", "/api/v1/person/" + id))

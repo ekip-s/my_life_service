@@ -1,5 +1,6 @@
 package com.life.model.courses;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.life.model.person.Person;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -10,6 +11,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -21,7 +23,7 @@ public class Course {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private UUID id;
     @ManyToOne
     @JoinColumn(name="person_id", nullable=false)
     private Person person;
@@ -39,12 +41,23 @@ public class Course {
     @Enumerated(EnumType.ORDINAL)
     private Status status;
     @Transient
-    @OneToMany(mappedBy="course")
+    @OneToMany(mappedBy="course", fetch = FetchType.LAZY)
     private List<Lesson> lessonList;
 
-    public void newCourse(Long personId) {
+    public Course(UUID personId, String courseName) {
         this.person = new Person(personId);
+        this.courseName = courseName;
         this.createDT = LocalDateTime.now();
         this.status = Status.NEW;
+    }
+
+    public Course(UUID id) {
+        this.id = id;
+    }
+
+    public Course doneCourse() {
+        this.endDate = LocalDate.now();
+        this.status = Status.DONE;
+        return this;
     }
 }
