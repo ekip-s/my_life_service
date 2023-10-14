@@ -51,19 +51,24 @@ public class LessonServiceImpl implements LessonService {
         Course course = courseService.getCourseById(courseId);
         List<Lesson> lessons = getLastLessons();
         LocalDate planedStartDate;
-        Integer lessonNum;
+
         if(lessons.isEmpty()) {
             planedStartDate = LocalDate.now();
-            lessonNum = 1;
         } else if (lessons.size() < 3) {
             Lesson engLesson = lessons.get(lessons.size() - 1);
             planedStartDate = engLesson.getPlanedStartDate();
-            lessonNum = engLesson.getLessonNum() + 1;
         } else {
             Lesson engLesson = lessons.get(lessons.size()- 1);
             planedStartDate = engLesson.getPlanedStartDate().plusDays(1);
-            lessonNum = engLesson.getLessonNum() + 1;
         }
+        Integer lessonNum;
+        List<Lesson> lessonByCourse = lessonRepository.findAllByCourse(course);
+        if(lessonByCourse.isEmpty()) {
+            lessonNum = 1;
+        } else {
+            lessonNum = lessonByCourse.size() + 1;
+        }
+
 
         return lessonRepository.save(new Lesson(course, planedStartDate, lessonNum, lessonName));
     }
