@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -53,7 +54,7 @@ public class LessonServiceImpl implements LessonService {
         LocalDate planedStartDate;
 
         if(lessons.isEmpty()) {
-            planedStartDate = LocalDate.now();
+            planedStartDate = LocalDate.now().plusDays(1);
         } else if (lessons.size() < 3) {
             Lesson engLesson = lessons.get(lessons.size() - 1);
             planedStartDate = engLesson.getPlanedStartDate();
@@ -69,8 +70,10 @@ public class LessonServiceImpl implements LessonService {
             lessonNum = lessonByCourse.size() + 1;
         }
 
+        Lesson newLesson = lessonRepository.save(new Lesson(course, planedStartDate, lessonNum, lessonName));
+        courseService.setCourseDate(courseId);
 
-        return lessonRepository.save(new Lesson(course, planedStartDate, lessonNum, lessonName));
+        return newLesson;
     }
 
     @Override
