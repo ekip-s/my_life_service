@@ -2,7 +2,9 @@ package com.life.courses.service;
 
 import com.life.model.courses.Course;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface CourseService {
@@ -14,4 +16,7 @@ public interface CourseService {
     Course patchCourseName(UUID courseId, String courseName);
     Course doneCourse(UUID courseId);
     void deleteAllCourse(UUID personId);
+    void setCourseDate(UUID courseId);
+    Optional<LocalDate> getMinDateCourse(UUID courseId);
+    Optional<LocalDate> getMaxDateCourse(UUID courseId);
 }

@@ -2,7 +2,9 @@ package com.life.courses.service;
 
 import com.life.model.courses.Lesson;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface LessonService {
