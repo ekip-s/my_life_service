@@ -20,6 +20,7 @@ public interface LessonRepository extends JpaRepository<Lesson, UUID> {
             " order by planedStartDate")
     List<Lesson> getLastLessons();
     List<Lesson> findAllByCourseAndStatusOrderByLessonNum(Course course, Status status);
+    List<Lesson> findAllByCourseOrderByLessonNum(Course course);
     List<Lesson> findAllByCourse(Course course);
     void deleteAllByCourse(Course course);
 }
